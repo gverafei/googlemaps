@@ -12,7 +12,7 @@ let latitudHome;
 let longitudHome;
 let transportesSelect = document.getElementById("Transporte");
 let rutaCheck = document.querySelector("#Ruta");
-let directionsRenderer = null;
+let directionsRenderer = new google.maps.DirectionsRenderer();
 
 // Esta función dibuja el mapa y coloca un marcador seleccionable en la FEI
 function dibujaMapa() {
@@ -44,18 +44,20 @@ function miUbicacion() {
             (position) => {
                 latitudHome = position.coords.latitude;
                 longitudHome = position.coords.longitude;
-                directionsRenderer = new google.maps.DirectionsRenderer();
                 new google.maps.Marker({
                     position: { lat: latitudHome, lng: longitudHome },
                     map: mapContext.map,
                     title: "Esta es tu ubicación actual",
-                    icon: "../images/home.png"
+                    icon: "images/home.png"
                 });
                 distancia();
+            },
+            () => {
+                $('#Distancia').val("La localización no está activada.");
             }
         );
     } else {
-        alert("El navegador no soporta geolocalización");
+        $('#Distancia').val("El navegador no soporta geolocalización");
     }
 }
 
